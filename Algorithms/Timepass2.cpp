@@ -1,83 +1,42 @@
 #include <iostream>
 using namespace std;
-
-// Merge function to merge two sorted subarrays
-void merge(int arr[], int left, int mid, int right)
+// Function to heapify a subtree rooted at index 'i'
+void build_heap(int arr[], int n)
 {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
-
-    // Create temporary arrays
-    int leftArr[n1];
-    int rightArr[n2];
-
-    // Copy data to temporary arrays
-    for (int i = 0; i < n1; ++i)
-        leftArr[i] = arr[left + i];
-    for (int j = 0; j < n2; ++j)
-        rightArr[j] = arr[mid + 1 + j];
-
-    // Merge the two subarrays back into arr
-    int i = 0, j = 0, k = left;
-    while (i < n1 && j < n2)
+    for (int i = n / 2 - 1; i >= 0; i--)
     {
-        if (leftArr[i] <= rightArr[j])
-        {
-            arr[k] = leftArr[i];
-            ++i;
-        }
-        else
-        {
-            arr[k] = rightArr[j];
-            ++j;
-        }
-        ++k;
-    }
+        int parent = i;
+        int left_child = 2 * i + 1;
+        int right_child = 2 * i + 2;
 
-    // Copy remaining elements if any
-    while (i < n1)
-    {
-        arr[k] = leftArr[i];
-        ++i;
-        ++k;
-    }
-    while (j < n2)
-    {
-        arr[k] = rightArr[j];
-        ++j;
-        ++k;
+        // Compare parent with left child
+        if (left_child < n && arr[left_child] > arr[parent])
+            swap(arr[parent], arr[left_child]);
+
+        // Compare parent with right child
+        if (right_child < n && arr[right_child] > arr[parent])
+            swap(arr[parent], arr[right_child]);
     }
 }
 
-// Recursive Merge Sort
-void mergeSort(int arr[], int left, int right)
-{
-    if (left < right)
-    {
-        int mid = left + (right - left) / 2;
-        mergeSort(arr, left, mid);      // Sort left half
-        mergeSort(arr, mid + 1, right); // Sort right half
-        merge(arr, left, mid, right);   // Merge the sorted halves
-    }
+// Main function to perform heap sort
+// Utility function to print an array
+void printArray(int arr[], int n) {
+    for (int i = 0; i < n; ++i)
+        cout << arr[i] << " ";
+    cout << endl;
 }
+int main() {
+    int arr[] = {2,3,4,5,6,7,8,1};
+    int n = sizeof(arr) / sizeof(arr[0]);
 
-int main()
-{
-    int n;
-    cout << "Enter number of element : ";
-    cin >> n;
-    int arr[n];
-    for (int i = 0; i < n; i++)
-    {
-        int element;
-        cout << "Enter Element Number in Array : ";
-        cin>>element;
-        arr[i]=element;
-    }
-    mergeSort(arr, 0, n-1);
-    cout << "Merge Sorted Array Is : " << endl;
-    for (int j = 0; j < n; j++)
-    {
-        cout << arr[j]<<" ";
-    }
+    cout << "Original array: ";
+    printArray(arr, n);
+
+    build_heap(arr, n);
+
+    cout << "Heap  array: ";
+    printArray(arr, n);
+
+    return 0;
 }
