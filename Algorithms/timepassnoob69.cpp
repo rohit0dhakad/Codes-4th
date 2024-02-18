@@ -7,49 +7,34 @@ void buildheap(int arr[], int n, int current_i)
     if (current_i > 0)
     {
 
-        if ((arr[left] > arr[right]) && (arr[parent] < arr[left]))
+        int largest = current_i;
+
+        if (left < n && arr[left] > arr[largest])
+            largest = left;
+        if (right < n && arr[right] > arr[largest])
+            largest = right;
+
+        if (largest != current_i)
         {
-            swap(arr[parent], arr[left]);
+            swap(arr[current_i], arr[largest]);
+            buildheap(arr, n, largest);
         }
-        if ((arr[right] > arr[left]) && (arr[parent] < arr[right]))
-        {
-            swap(arr[parent], arr[right]);
-        }
-        if (right < n && arr[parent] < arr[left])
-        {
-            swap(arr[parent], arr[left]);
-        }
-        buildheap(arr, n, current_i-1);
     }
 }
 void heapcheck(int arr[], int n)
 {
-    // int current_i = n / 2;
-    for (int i = n/2-1; i >=0; i--)
+    for (int i = n / 2 - 1; i >= 0; i--)
     {
         buildheap(arr, n, i);
     }
 }
+
 void heapsort(int arr[], int n)
 {
-    // for (int i = n / 2; i >= 0; i--)
-    // {
-    //     buildheap(arr, n, i);
-    // }
-    // cout << "Heap array: \n";
-    // for (int i = 0; i < n; i++)
-    //     cout << " " << arr[i];
-    // cout << endl;
     for (int i = n - 1; i >= 0; i--)
     {
         swap(arr[0], arr[i]);
-        // (arr, (i)-1);
-
-        // for (int j = i / 2 - 1; j >=0; j--)
-        // {
-        //      buildheap(arr,n, j);
-        // }
-        buildheap(arr,i+1,1);
+        buildheap(arr, n, i/2-1);
     }
 }
 int main()
