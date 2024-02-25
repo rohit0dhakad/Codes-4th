@@ -158,13 +158,13 @@ void findMax(int *finalpointtable,int candidate_number)
     {   
         if (finalpointtable[j] == maxVal)
         {
-            cout << "\nPlayer Number  : " << j + 1 << " Is Won The Match";
+            cout << "\nPlayer Number  : " << j + 1 << "Won The Match";
             array[j]=maxVal;
             count++;
         }
     }
     if(count >1){
-        cout<< "\nMatch Is Tie between  ";
+        cout<< "\nMatch Tie between  ";
         for(int i = 0; i<candidate_number;i++){
             if(array[i]==maxVal){
                 cout<<"Player : "<<i+1<<" ";
@@ -181,7 +181,7 @@ int main()
     {
         try
         {
-            cout << "\nHow many players do you want to play the game with: ";
+            cout << "\nHow many players do you want to play the game : ";
             cin >> candidate_number;
             if (candidate_number <= 1)
             {
