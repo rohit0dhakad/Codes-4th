@@ -126,7 +126,7 @@ public:
     //         Pile_of_Cards.erase(Pile_of_Cards.begin());
     //     }
     // }
-    void Rules(vector<vector<string>  > PlayerCards)
+    void Rules(vector<vector<string>  > &PlayerCards)
     {
         // Player();
         // cout << "Enter the number of players: ";
@@ -232,7 +232,7 @@ public:
             // else
             // {++i; Move to the next player's turn}
             DiscardArray.insert(DiscardArray.begin(),PlayerCards[i][Card_indx]);
-            PlayerCards[Card_indx].erase(PlayerCards[Card_indx].begin() + Card_indx);
+            PlayerCards[i].erase(PlayerCards[i].begin()+Card_indx);
 
             ++i;
         }
