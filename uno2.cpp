@@ -118,7 +118,7 @@ public:
             DiscardArray.push_back(Pile_of_Cards.at(0));
             Pile_of_Cards.erase(Pile_of_Cards.begin());
         }
-        while (PlayerCards[0].size() != 0)
+        while (true)
         {
             if (i >= NumPlayer)
                 i = 0;
@@ -147,7 +147,11 @@ public:
             string lastValue = DiscardArray.at(0).substr(DiscardArray.at(0).find(" ") + 1);
             cout << "\nLast Color is: " << lastColor;
             cout << "\nLast Value is: " << lastValue;
-            bool minusOneChosen = false;
+            if (PlayerCards[i].empty())
+            {
+                cout << "Player " << playerArrays[i] << " has no cards left. Game over!" << endl;
+                break;
+            }
 
             if (LastCard == "Skip")
             {
@@ -161,24 +165,21 @@ public:
                 if (Pile_of_Cards.size() < 2)
                 {
                     cout << "Not enough cards in the pile to draw 2!" << endl;
-                }
-                else
-                {
-                    cout << "Last Card is Draw 2 Card, so picked 2 cards" << endl;
-
-                    PlayerCards[i].push_back(Pile_of_Cards[0]);
-                    Pile_of_Cards.erase(Pile_of_Cards.begin());
-                    PlayerCards[i].push_back(Pile_of_Cards[0]);
-                    Pile_of_Cards.erase(Pile_of_Cards.begin());
+                }else{
+              cout << " Last Card is Wild Draw 2 Card, so added 2 cards" << endl;
+                    for (int j = 0; j < 2; j++)
+                    {
+                        PlayerCards[i].push_back(Pile_of_Cards[0]);
+                        Pile_of_Cards.erase(Pile_of_Cards.begin());
+                    }
+                    cout << "\nPlayer " << playerArrays[i] << "'s turn." << endl;
+                    for (int j = 0; j < PlayerCards[i].size(); j++)
+                    {
+                        cout << "  Card " << j + 1 << ": " << PlayerCards[i][j] << endl;
+                    }
                     LastCard = " ";
                     i++;
-                }
-                cout << "\nPlayer " << playerArrays[i] << "'s turn." << endl;
-                for (int j = 0; j < PlayerCards[i].size(); j++)
-                {
-                    cout << "  Card " << j + 1 << ": " << PlayerCards[i][j] << endl;
-                }
-            }
+            }}
             else if (LastCard == "WildDraw4") // lastvalue is not draw 4
             {
                 if (Pile_of_Cards.size() < 4)
@@ -187,7 +188,7 @@ public:
                 }
                 else
                 {
-                    cout << "Last Card is Wild Draw 4 Card, so add 4 cards" << endl;
+                    cout << " Last Card is Wild Draw 4 Card, so added 4 cards" << endl;
                     for (int j = 0; j < 4; j++)
                     {
                         PlayerCards[i].push_back(Pile_of_Cards[0]);
@@ -204,7 +205,7 @@ public:
             }
             else
             {
-                minusOneChosen = false;
+                bool minusOneChosen = false;
                 while (true)
                 {
                     try
@@ -216,7 +217,7 @@ public:
                         {
                             PlayerCards[i].push_back(Pile_of_Cards[0]);
                             Pile_of_Cards.erase(Pile_of_Cards.begin());
-                                                        // cout << "\nPlayer " << playerArrays[i] << "'s turn." << endl;
+                            // cout << "\nPlayer " << playerArrays[i] << "'s turn." << endl;
 
                             // for (int j = 0; j < PlayerCards[i].size(); j++)
                             // {
@@ -225,21 +226,23 @@ public:
                             minusOneChosen = true;
                         }
                         else if (Card_indx == -2)
-                        {  if (!minusOneChosen) {
-                    cout << "You must choose -1 at least once before choosing -2." << endl;
-                
-                            // cout << "\nPlayer " << playerArrays[i] << "'s turn." << endl;
-                            // for (int j = 0; j < PlayerCards[i].size(); j++)
-                            // {
-                            //     cout << "  Card " << j + 1 << ": " << PlayerCards[i][j] << endl;
-                            // }
-                        
-                        }
-                            i++;}
-                        else if (Card_indx != -1 && Card_indx < PlayerCards[i].size())
                         {
-                            string CurrentColor = PlayerCards.at(i).at(Card_indx).substr(0, PlayerCards.at(i).at(Card_indx).find(" "));
-                            string CurrentValue = PlayerCards.at(i).at(Card_indx).substr(PlayerCards.at(i).at(Card_indx).find(" ") + 1);
+                            if (!minusOneChosen)
+                            {
+                                cout << "You must choose -1 at least once before choosing -2." << endl;
+
+                                // cout << "\nPlayer " << playerArrays[i] << "'s turn." << endl;
+                                // for (int j = 0; j < PlayerCards[i].size(); j++)
+                                // {
+                                //     cout << "  Card " << j + 1 << ": " << PlayerCards[i][j] << endl;
+                                // }
+                            }
+                            i++;
+                        }
+                        else if (Card_indx != -1 && Card_indx <= PlayerCards[i].size())
+                        {
+                            string CurrentColor = PlayerCards.at(i).at(Card_indx - 1).substr(0, PlayerCards.at(i).at(Card_indx - 1).find(" "));
+                            string CurrentValue = PlayerCards.at(i).at(Card_indx - 1).substr(PlayerCards.at(i).at(Card_indx - 1).find(" ") + 1);
                             cout << "\nCurrent Color is: " << CurrentColor;
                             cout << "\nCurrent Value is: " << CurrentValue;
                             if ((CurrentColor != lastColor && CurrentValue != lastValue) && CurrentColor != "WildColour" && CurrentColor != "WildDraw4")
@@ -252,11 +255,11 @@ public:
                         {
                             throw invalid_argument("You can only choose -1 once. Please choose a valid index.");
                         }
-                          cout << "\nPlayer " << playerArrays[i] << "'s turn." << endl;
-                            for (int j = 0; j < PlayerCards[i].size(); j++)
-                            {
-                                cout << "  Card " << j + 1 << ": " << PlayerCards[i][j] << endl;
-                            }
+                        cout << "\nPlayer " << playerArrays[i] << "'s turn." << endl;
+                        for (int j = 0; j < PlayerCards[i].size(); j++)
+                        {
+                            cout << "  Card " << j + 1 << ": " << PlayerCards[i][j] << endl;
+                        }
                     }
                     catch (const invalid_argument &e)
                     {
@@ -266,15 +269,17 @@ public:
                     }
                 }
 
-                string CurrentColor = PlayerCards.at(i).at(Card_indx).substr(0, PlayerCards.at(i).at(Card_indx).find(" "));
-                string CurrentValue = PlayerCards.at(i).at(Card_indx).substr(PlayerCards.at(i).at(Card_indx).find(" ") + 1);
+                string CurrentColor = PlayerCards.at(i).at(Card_indx - 1).substr(0, PlayerCards.at(i).at(Card_indx - 1).find(" "));
+                string CurrentValue = PlayerCards.at(i).at(Card_indx - 1).substr(PlayerCards.at(i).at(Card_indx - 1).find(" ") + 1);
                 int color;
 
                 string colorarray[] = {"Red", "Blue", "Green", "Yellow"};
-                if (CurrentValue == "Reverse" && CurrentColor == lastColor)
+                if (CurrentValue == "Reverse" /*&& CurrentColor == lastColor*/)
                 {
                     cout << "\nYou Put Reverse Card" << endl;
-                    PlayerCards[i].erase(PlayerCards[i].begin() + Card_indx);
+                    string combinedElement = CurrentColor + " " + lastValue;
+                    DiscardArray.insert(DiscardArray.begin(), combinedElement);
+                    PlayerCards[i].erase(PlayerCards[i].begin() + Card_indx - 1);
                     reverseOrder = !reverseOrder;
                 }
                 else if (/*CurrentColor == lastColor &&*/ CurrentValue == "Skip") // Done
@@ -282,7 +287,7 @@ public:
                     cout << "\nYou Put Skip Card" << endl;
                     string combinedElement = CurrentColor + " " + lastValue;
                     DiscardArray.insert(DiscardArray.begin(), combinedElement);
-                    PlayerCards[i].erase(PlayerCards[i].begin() + Card_indx);
+                    PlayerCards[i].erase(PlayerCards[i].begin() + Card_indx - 1);
                     LastCard = "Skip";
                     i++;
                 }
@@ -291,15 +296,15 @@ public:
                     cout << "\nYou Put Draw 2 Card" << endl;
                     string combinedElement = CurrentColor + " " + lastValue;
                     DiscardArray.insert(DiscardArray.begin(), combinedElement);
-                    PlayerCards[i].erase(PlayerCards[i].begin() + Card_indx);
+                    PlayerCards[i].erase(PlayerCards[i].begin() + Card_indx - 1);
                     LastCard = "Draw2";
                     i++;
                 }
                 else if (CurrentColor == "WildDraw4")
                 {
                     cout << "\nYou Put Wild Draw 4" << endl;
-                    DiscardArray.insert(DiscardArray.begin(), PlayerCards[i][Card_indx]);
-                    PlayerCards[i].erase(PlayerCards[i].begin() + Card_indx);
+                    DiscardArray.insert(DiscardArray.begin(), PlayerCards[i][Card_indx - 1]);
+                    PlayerCards[i].erase(PlayerCards[i].begin() + Card_indx - 1);
                     cout << "\nEnter Color That You Choose {Red(1), Blue(2), Green(3), Yellow(4)}: ";
                     cin >> color;
                     cout << "\nNow New Color Is: " << colorarray[color - 1] << endl;
@@ -310,8 +315,8 @@ public:
                 }
                 else if (CurrentColor == lastColor || CurrentValue == lastValue) // Done
                 {
-                    DiscardArray.insert(DiscardArray.begin(), PlayerCards[i][Card_indx]);
-                    PlayerCards[i].erase(PlayerCards[i].begin() + Card_indx);
+                    DiscardArray.insert(DiscardArray.begin(), PlayerCards[i][Card_indx - 1]);
+                    PlayerCards[i].erase(PlayerCards[i].begin() + Card_indx - 1);
                     i++;
                 }
                 else if (CurrentColor == "WildColour") // Done
@@ -321,7 +326,7 @@ public:
                     cout << "\nNow New Color Is: " << colorarray[color - 1] << endl;
                     string combinedElement = colorarray[color - 1] + " " + lastValue;
                     DiscardArray.insert(DiscardArray.begin(), combinedElement);
-                    PlayerCards[i].erase(PlayerCards[i].begin() + Card_indx);
+                    PlayerCards[i].erase(PlayerCards[i].begin() + Card_indx - 1);
                     i++;
                 }
                 else
@@ -331,7 +336,7 @@ public:
                 }
                 if (reverseOrder)
                 {
-                    // i--;
+                    i--;
                     reverse(playerArrays, playerArrays + NumPlayer);
                     reverseOrder = false;
                 }
