@@ -150,6 +150,7 @@ public:
             if (PlayerCards[i].empty())
             {
                 cout << "Player " << playerArrays[i] << " has no cards left. Game over!" << endl;
+                cout<<"<----GAME IS FINISH---->\nWinner Is Player Number : "<<playerArrays[i]<<"\n THANKS FOR PLAY";
                 break;
             }
 
